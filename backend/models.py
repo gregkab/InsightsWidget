@@ -1,0 +1,39 @@
+from pydantic import BaseModel, HttpUrl, Field
+from typing import List, Optional
+from enum import Enum
+
+class ImpactLevel(str, Enum):
+    LOW = "Low"
+    MEDIUM = "Medium"
+    HIGH = "High"
+
+class AnalyzeRequest(BaseModel):
+    """Request model for the analyze endpoint."""
+    content: str = Field(
+        ...,  # ... means required
+        min_length=1,
+        max_length=50000,  # Reasonable limit for content length
+        description="The webpage content to analyze"
+    )
+    url: Optional[HttpUrl] = Field(
+        None,
+        description="The URL of the webpage (optional)"
+    )
+
+class Insight(BaseModel):
+    """Model for a single insight."""
+    content: str = Field(..., description="The insight content")
+    confidence: float = Field(
+        ...,
+        ge=0.0,  # greater than or equal to 0
+        le=1.0,  # less than or equal to 1
+        description="Confidence score for this insight"
+    )
+    rationale: str = Field(..., description="Explanation of why this insight matters")
+    impact: ImpactLevel = Field(..., description="Expected impact of implementing this insight")
+
+class AnalyzeResponse(BaseModel):
+    """Response model for the analyze endpoint."""
+    insights: List[Insight] = Field(..., min_items=1, max_items=5)
+    expert_role: str = Field(..., description="The role of the expert providing insights")
+    processing_time: float = Field(..., description="Time taken to process the request in seconds") 
