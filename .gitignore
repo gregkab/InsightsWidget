@@ -1,8 +1,25 @@
+# Environment and virtual environment
 .env
 .venv/
+
+# Python bytecode
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 *.pyw
 *.pyz
+
+# Test related
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+
+# IDE specific
+.vscode/
+.idea/
+*.swp
+*.swo

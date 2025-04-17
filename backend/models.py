@@ -24,6 +24,6 @@ class Insight(BaseModel):
 
 class AnalyzeResponse(BaseModel):
     """Response model for the analyze endpoint."""
-    insights: List[Insight] = Field(..., min_items=1, max_items=5)
+    insights: List[Insight] = Field(..., min_length=1, max_length=5)
     expert_role: str = Field(..., description="The role of the expert providing insights")
     processing_time: float = Field(..., description="Time taken to process the request in seconds") 
