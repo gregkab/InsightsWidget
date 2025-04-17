@@ -101,7 +101,6 @@ def analyze_content(request: AnalyzeRequest) -> AnalyzeResponse:
         insights = [
             Insight(
                 content=insight["content"],
-                confidence=insight["confidence"],
                 rationale=insight["rationale"],
                 impact=insight["impact"]
             )

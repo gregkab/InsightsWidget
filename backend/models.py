@@ -23,12 +23,6 @@ class AnalyzeRequest(BaseModel):
 class Insight(BaseModel):
     """Model for a single insight."""
     content: str = Field(..., description="The insight content")
-    confidence: float = Field(
-        ...,
-        ge=0.0,  # greater than or equal to 0
-        le=1.0,  # less than or equal to 1
-        description="Confidence score for this insight"
-    )
     rationale: str = Field(..., description="Explanation of why this insight matters")
     impact: ImpactLevel = Field(..., description="Expected impact of implementing this insight")
 
