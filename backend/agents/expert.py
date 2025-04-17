@@ -32,7 +32,6 @@ Keep insights concise and actionable."""
         expert_role: str,
         analysis_prompt: str,
         focus_areas: List[str],
-        url: str = None
     ) -> List[Dict]:
         """
         Generate insights based on content and expert role.
@@ -42,7 +41,6 @@ Keep insights concise and actionable."""
             expert_role: The role this expert should assume
             analysis_prompt: Specific guidance for analysis
             focus_areas: Key areas to focus on
-            url: Optional URL of the webpage
         
         Returns:
             List of insights with content, and rationale
@@ -53,8 +51,6 @@ Keep insights concise and actionable."""
             f"Analysis prompt: {analysis_prompt}\n\n"
             f"Focus areas:\n" + "\n".join(f"- {area}" for area in focus_areas)
         )
-        if url:
-            context += f"\n\nURL: {url}"
             
         # Set up JSON response format
         response_format = {

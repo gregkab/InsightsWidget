@@ -85,7 +85,6 @@ def analyze_content(request: AnalyzeRequest) -> AnalyzeResponse:
         # Step 1: Use planner to determine expert and approach
         plan = planner_agent.analyze_content(
             content=request.content,
-            url=str(request.url) if request.url else None
         )
         
         # Step 2: Get insights from the expert
@@ -94,7 +93,6 @@ def analyze_content(request: AnalyzeRequest) -> AnalyzeResponse:
             expert_role=plan["expert_role"],
             analysis_prompt=plan["analysis_prompt"],
             focus_areas=plan["focus_areas"],
-            url=str(request.url) if request.url else None
         )
         
         # Step 3: Convert expert insights to response format

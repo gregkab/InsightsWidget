@@ -23,21 +23,18 @@ Consider the following when making your decision:
 
 Be specific and practical in your recommendations. Choose an expert role that can provide the most actionable insights."""
 
-    def analyze_content(self, content: str, url: str = None) -> Dict:
+    def analyze_content(self, content: str) -> Dict:
         """
         Analyze content and determine the best expert and approach.
         
         Args:
             content: The webpage content to analyze
-            url: Optional URL of the webpage
         
         Returns:
             Dict containing expert_role, analysis_prompt, and focus_areas
         """
         # Prepare the content for analysis
         context = f"Content: {content}\n"
-        if url:
-            context += f"URL: {url}\n"
             
         # Set up JSON response format
         response_format = {

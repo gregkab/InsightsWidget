@@ -1,5 +1,5 @@
-from pydantic import BaseModel, HttpUrl, Field
-from typing import List, Optional
+from pydantic import BaseModel, Field
+from typing import List
 from enum import Enum
 
 class ImpactLevel(str, Enum):
@@ -14,10 +14,6 @@ class AnalyzeRequest(BaseModel):
         min_length=1,
         max_length=50000,  # Reasonable limit for content length
         description="The webpage content to analyze"
-    )
-    url: Optional[HttpUrl] = Field(
-        None,
-        description="The URL of the webpage (optional)"
     )
 
 class Insight(BaseModel):
