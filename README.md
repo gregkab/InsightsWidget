@@ -19,10 +19,10 @@ An embeddable AI widget that analyzes webpage content and provides expert insigh
 │   ├── main.py       # FastAPI application
 │   ├── agents/       # AI agent implementations
 │   └── utils/        # Utility functions
-├── widget/           # Frontend widget code
-│   ├── widget.js     # Widget implementation
-│   └── styles.css    # Widget styling
 ├── public/           # Public assets and demo
+│   ├── widget/       # Frontend widget code
+│   │   ├── widget.js # Widget implementation
+│   │   └── styles.css # Widget styling
 │   └── demo.html     # Demo page
 └── .env              # Environment variables
 ```
@@ -58,7 +58,7 @@ An embeddable AI widget that analyzes webpage content and provides expert insigh
    ```
 2. Build the widget:
    ```bash
-   cd widget
+   cd public/widget
    npm install
    npm run build
    ```
@@ -68,7 +68,7 @@ An embeddable AI widget that analyzes webpage content and provides expert insigh
 Add the widget to your webpage:
 
 ```html
-<script src="path/to/widget.js" 
+<script src="https://your-domain.com/widget/widget.js" 
         data-api="http://your-api-endpoint"
         data-theme="light"
         data-mode="floating">

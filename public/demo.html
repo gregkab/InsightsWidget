@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Insight Widget Demo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+  <link rel="stylesheet" href="widget/styles.css">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+    
+    h2 {
+      color: #555;
+      margin: 30px 0 15px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    
+    .description {
+      font-size: 18px;
+      color: #666;
+      margin-bottom: 30px;
+    }
+    
+    article {
+      margin-bottom: 40px;
+    }
+    
+    .demo-controls {
+      background-color: #f9f9f9;
+      padding: 20px;
+      border-radius: 6px;
+      margin-bottom: 30px;
+    }
+    
+    .demo-controls h3 {
+      margin-top: 0;
+    }
+    
+    .control-group {
+      margin-bottom: 15px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    
+    select, button {
+      padding: 8px 12px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      background-color: white;
+    }
+    
+    button {
+      background-color: #5a7eff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    
+    button:hover {
+      background-color: #4a69d9;
+    }
+    
+    code {
+      background-color: #f5f5f5;
+      padding: 2px 4px;
+      border-radius: 3px;
+    }
+    
+    pre {
+      background-color: #f5f5f5;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AI Insight Widget Demo</h1>
+    <p class="description">Demonstrate how the AI Insight Widget analyzes content to provide intelligent insights.</p>
+  </header>
+  
+  <div class="demo-controls">
+    <h3>Widget Configuration</h3>
+    <div class="control-group">
+      <label for="theme-selector">Theme:</label>
+      <select id="theme-selector">
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label for="mode-selector">Mode:</label>
+      <select id="mode-selector">
+        <option value="auto">Auto (analyze immediately)</option>
+        <option value="manual">Manual (analyze on click)</option>
+      </select>
+    </div>
+    <button id="apply-settings">Apply Settings</button>
+  </div>
+  
+  <article data-selector>
+    <h2>Understanding Artificial Intelligence</h2>
+    <p>
+      Artificial Intelligence (AI) refers to the simulation of human intelligence in machines that are programmed to think and learn like humans. 
+      The term may also be applied to any machine that exhibits traits associated with a human mind such as learning and problem-solving.
+    </p>
+    <p>
+      The ideal characteristic of artificial intelligence is its ability to rationalize and take actions that have the best chance of achieving a specific goal. 
+      Machine learning, a subset of AI, is based on the idea that systems can learn from data, identify patterns, and make decisions with minimal human intervention.
+    </p>
+    <p>
+      Some of the key components of AI include:
+    </p>
+    <ul>
+      <li><strong>Machine Learning</strong>: The ability for computers to learn without being explicitly programmed</li>
+      <li><strong>Neural Networks</strong>: Computing systems vaguely inspired by the biological neural networks that constitute animal brains</li>
+      <li><strong>Deep Learning</strong>: Part of a broader family of machine learning methods based on artificial neural networks</li>
+      <li><strong>Natural Language Processing</strong>: The ability of computers to understand, interpret, and generate human language</li>
+    </ul>
+  </article>
+  
+  <article data-selector>
+    <h2>The Future of AI Technology</h2>
+    <p>
+      As AI continues to evolve, it promises to transform industries and change the way we live and work. 
+      From autonomous vehicles to healthcare diagnostics, AI is already making an impact across various sectors.
+    </p>
+    <p>
+      However, the rapid advancement of AI also raises important ethical questions and challenges regarding privacy, security, job displacement, and decision-making accountability.
+      Ensuring that AI systems are developed responsibly and with human values in mind will be crucial for its continued growth and acceptance.
+    </p>
+    <p>
+      Experts predict that in the coming decades, AI will become increasingly integrated into our daily lives, 
+      potentially leading to significant societal changes and new paradigms in how we interact with technology.
+    </p>
+  </article>
+  
+  <section>
+    <h2>Widget Integration</h2>
+    <p>Adding the AI Insight Widget to your site is easy. Just include the following code:</p>
+    <pre><code>&lt;link rel="stylesheet" href="path/to/widget/styles.css"&gt;
+&lt;script src="path/to/widget/widget.js" data-api="https://your-api-url.com" data-selector="[data-selector]" data-theme="light" data-mode="auto"&gt;&lt;/script&gt;</code></pre>
+  </section>
+  
+  <script src="widget/widget.js" data-api="http://localhost:8000" data-selector="[data-selector]" data-theme="light" data-mode="auto"></script>
+  
+  <script>
+    // Demo controls
+    document.getElementById('apply-settings').addEventListener('click', function() {
+      const theme = document.getElementById('theme-selector').value;
+      const mode = document.getElementById('mode-selector').value;
+      
+      // Reinitialize widget with new settings
+      if (window.aiInsightWidget) {
+        // Remove existing widget
+        document.querySelector('.ai-insight-widget').remove();
+      }
+      
+      // Create new widget
+      window.aiInsightWidget = new AIInsightWidget({
+        apiUrl: 'http://localhost:8000',
+        selector: '[data-selector]',
+        theme: theme,
+        mode: mode
+      });
+      
+      console.log(`Applied settings: theme=${theme}, mode=${mode}`);
+    });
+  </script>
+</body>
+</html> 
