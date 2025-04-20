@@ -1,0 +1,13 @@
+{
+  "name": "ai-insight-widget",
+  "version": "1.0.0",
+  "description": "A widget that provides AI-generated insights for page content",
+  "scripts": {
+    "build": "node public/widget/build.js",
+    "dev": "cd backend && python -m uvicorn main:app --reload --port 8000"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+} 

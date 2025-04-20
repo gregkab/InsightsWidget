@@ -95,6 +95,41 @@
       border-radius: 5px;
       overflow-x: auto;
     }
+    
+    .dynamic-demo {
+      border: 1px dashed #ccc;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 5px;
+    }
+    
+    .content-controls {
+      margin-top: 15px;
+    }
+    
+    #dynamic-content {
+      min-height: 80px;
+    }
+    
+    .feature-list {
+      list-style: none;
+      padding-left: 0;
+    }
+    
+    .feature-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .feature-list li:last-child {
+      border-bottom: none;
+    }
+    
+    .new-feature {
+      background-color: #f0fff4;
+      border-left: 3px solid #38a169;
+      padding-left: 10px;
+    }
   </style>
 </head>
 <body>
@@ -117,6 +152,20 @@
       <select id="mode-selector">
         <option value="auto">Auto (analyze immediately)</option>
         <option value="manual">Manual (analyze on click)</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label for="dynamic-selector">Dynamic Content Support:</label>
+      <select id="dynamic-selector">
+        <option value="true">Enabled</option>
+        <option value="false">Disabled</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label for="smart-detection-selector">Smart Content Detection:</label>
+      <select id="smart-detection-selector">
+        <option value="true">Enabled</option>
+        <option value="false">Disabled</option>
       </select>
     </div>
     <button id="apply-settings">Apply Settings</button>
@@ -159,20 +208,99 @@
     </p>
   </article>
   
+  <!-- Dynamic Content Demo -->
+  <h2>Dynamic Content Demo</h2>
+  <p>
+    This section demonstrates how the widget works with dynamically changing content.
+    Try adding or modifying content, and see how the widget detects these changes.
+  </p>
+  
+  <div class="dynamic-demo" data-selector>
+    <h3>Dynamic Content Area</h3>
+    <div id="dynamic-content">
+      <p>This content can be changed dynamically. Try adding or editing text here.</p>
+    </div>
+    <div class="content-controls">
+      <button id="add-content">Add Content</button>
+      <button id="replace-content">Replace Content</button>
+      <button id="clear-content">Clear Content</button>
+    </div>
+  </div>
+  
+  <!-- Form Demo -->
+  <h2>Form Input Demo</h2>
+  <p>
+    This form demonstrates how the widget captures form input data.
+    Fill out the form, and the widget will include this data in its analysis.
+  </p>
+  
+  <form data-selector>
+    <div class="control-group">
+      <label for="name-input">Your Name:</label>
+      <input type="text" id="name-input" name="name" placeholder="Enter your name">
+    </div>
+    <div class="control-group">
+      <label for="feedback-input">Feedback:</label>
+      <textarea id="feedback-input" name="feedback" rows="4" placeholder="Enter your feedback about AI"></textarea>
+    </div>
+    <div class="control-group">
+      <label>AI Experience Level:</label>
+      <label style="display: inline-block; margin-right: 15px;">
+        <input type="radio" name="experience" value="beginner"> Beginner
+      </label>
+      <label style="display: inline-block; margin-right: 15px;">
+        <input type="radio" name="experience" value="intermediate"> Intermediate
+      </label>
+      <label style="display: inline-block;">
+        <input type="radio" name="experience" value="advanced"> Advanced
+      </label>
+    </div>
+    <div class="control-group">
+      <label for="interest-selector">Primary Interest in AI:</label>
+      <select id="interest-selector" name="interest">
+        <option value="">-- Select an area --</option>
+        <option value="nlp">Natural Language Processing</option>
+        <option value="cv">Computer Vision</option>
+        <option value="rl">Reinforcement Learning</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+  </form>
+  
   <section>
     <h2>Widget Integration</h2>
     <p>Adding the AI Insight Widget to your site is easy. Just include the following code:</p>
     <pre><code>&lt;link rel="stylesheet" href="path/to/widget/styles.css"&gt;
-&lt;script src="path/to/widget/widget.js" data-api="https://your-api-url.com" data-selector="[data-selector]" data-theme="light" data-mode="auto"&gt;&lt;/script&gt;</code></pre>
+&lt;script src="path/to/widget/widget.js" 
+  data-api="https://your-api-url.com" 
+  data-selector="[data-selector]" 
+  data-theme="light" 
+  data-mode="auto"
+  data-dynamic="true"
+  data-smart-detection="true"&gt;&lt;/script&gt;</code></pre>
   </section>
   
-  <script src="widget/widget.js" data-api="http://localhost:8000" data-selector="[data-selector]" data-theme="light" data-mode="auto"></script>
+  <section>
+    <h2>New Features</h2>
+    <p>The AI Insight Widget now includes the following advanced features:</p>
+    <ul class="feature-list">
+      <li class="new-feature"><strong>Smart Content Detection</strong>: Automatically finds relevant content on the page even without data-selector attributes</li>
+      <li class="new-feature"><strong>Dynamic Content Support</strong>: Monitors the page for content changes using MutationObserver</li>
+      <li class="new-feature"><strong>Form Data Capture</strong>: Captures data from forms as part of the content analysis</li>
+      <li class="new-feature"><strong>Content Change Notification</strong>: Alerts you when content has changed and offers quick reanalysis</li>
+      <li class="new-feature"><strong>Performance Optimization</strong>: Smart handling of content updates to prevent unnecessary analysis</li>
+    </ul>
+  </section>
+  
+  <script src="widget/widget.js" data-api="http://localhost:8000" data-selector="[data-selector]" data-theme="light" data-mode="auto" data-dynamic="true" data-smart-detection="true"></script>
   
   <script>
     // Demo controls
     document.getElementById('apply-settings').addEventListener('click', function() {
       const theme = document.getElementById('theme-selector').value;
       const mode = document.getElementById('mode-selector').value;
+      const dynamic = document.getElementById('dynamic-selector').value;
+      const smartDetection = document.getElementById('smart-detection-selector').value;
       
       // Reinitialize widget with new settings
       if (window.aiInsightWidget) {
@@ -185,10 +313,33 @@
         apiUrl: 'http://localhost:8000',
         selector: '[data-selector]',
         theme: theme,
-        mode: mode
+        mode: mode,
+        dynamicContentSupport: dynamic === 'true',
+        smartContentDetection: smartDetection === 'true'
       });
       
-      console.log(`Applied settings: theme=${theme}, mode=${mode}`);
+      console.log(`Applied settings: theme=${theme}, mode=${mode}, dynamic=${dynamic}, smartDetection=${smartDetection}`);
+    });
+    
+    // Dynamic content demo
+    const dynamicContent = document.getElementById('dynamic-content');
+    let contentCounter = 1;
+    
+    document.getElementById('add-content').addEventListener('click', function() {
+      const newParagraph = document.createElement('p');
+      newParagraph.textContent = `This is dynamically added content #${contentCounter++}. The widget will detect this change.`;
+      dynamicContent.appendChild(newParagraph);
+    });
+    
+    document.getElementById('replace-content').addEventListener('click', function() {
+      dynamicContent.innerHTML = `
+        <p>This content has been completely replaced at ${new Date().toLocaleTimeString()}.</p>
+        <p>The AI Insight Widget will detect this change and offer to reanalyze the content.</p>
+      `;
+    });
+    
+    document.getElementById('clear-content').addEventListener('click', function() {
+      dynamicContent.innerHTML = '';
     });
   </script>
 </body>
