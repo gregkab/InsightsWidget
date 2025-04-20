@@ -6,7 +6,16 @@
 import { createConfig, getConfigFromScriptTag } from './core/config.js';
 import { findContentElements, createContentObserver, extractContentFromElements } from './core/content-detector.js';
 import { analyzeContent } from './core/api-service.js';
-import { createWidgetElements, updatePanelContent, showLoading, showError, showContentChangedNotification, formatInsights, addExpertRole } from './ui/elements.js';
+import { 
+  createWidgetElements, 
+  updatePanelContent, 
+  showLoading, 
+  showError, 
+  showContentChangedNotification, 
+  removeContentChangedNotification,
+  formatInsights, 
+  addExpertRole 
+} from './ui/elements.js';
 import { addStyles } from './ui/styles.js';
 import { hasContentChangedSignificantly } from './utils/helpers.js';
 
@@ -121,6 +130,9 @@ export class AIInsightWidget {
   async analyzeContent() {
     // Reset content changed flag
     this.contentChanged = false;
+    
+    // Remove any existing content changed notification
+    removeContentChangedNotification(this.ui.contentEl);
     
     // Refresh content elements in case DOM has changed significantly
     if (this.config.dynamicContentSupport) {

@@ -97,7 +97,21 @@ export function showContentChangedNotification(contentEl, onReanalyze) {
     contentEl.insertBefore(notification, contentEl.firstChild);
     
     // Add click event for reanalysis
-    notification.querySelector('.reanalyze-button').addEventListener('click', onReanalyze);
+    notification.querySelector('.reanalyze-button').addEventListener('click', () => {
+      removeContentChangedNotification(contentEl);
+      onReanalyze();
+    });
+  }
+}
+
+/**
+ * Remove content changed notification if it exists
+ * @param {Element} contentEl - The content element
+ */
+export function removeContentChangedNotification(contentEl) {
+  const notification = contentEl.querySelector('.content-changed-notification');
+  if (notification) {
+    notification.remove();
   }
 }
 

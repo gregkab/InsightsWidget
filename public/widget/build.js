@@ -32,26 +32,53 @@ const banner = `/**
  * Built on ${new Date().toISOString().split('T')[0]}
  */
 
+(function() {
 `;
+
+// Closing IIFE
+const footer = `})();`;
 
 // Process files
 let bundle = banner;
 
-// Process each file
+// Keep track of module exports
+const exportedFunctions = new Set();
+
+// First pass: gather all exported function names
+for (const file of files) {
+  console.log(`First pass - Collecting exports from: ${path.relative(process.cwd(), file)}`);
+  
+  let content = fs.readFileSync(file, 'utf8');
+  
+  // Find export declarations
+  const exportRegex = /export\s+(const|function|class|let|var)\s+(\w+)/g;
+  let match;
+  
+  while ((match = exportRegex.exec(content)) !== null) {
+    exportedFunctions.add(match[2]);
+    console.log(`  Found export: ${match[2]}`);
+  }
+}
+
+// Second pass: process each file
 for (const file of files) {
   console.log(`Processing: ${path.relative(process.cwd(), file)}`);
   
   let content = fs.readFileSync(file, 'utf8');
   
-  // Remove module imports
-  content = content.replace(/^import.*?;$/gm, '');
+  // Remove import statements (they've all been resolved in our bundle order)
+  content = content.replace(/^import\s+{([^}]+)}\s+from\s+['"]\.\/.*?['"]\s*;?$/gm, '');
+  content = content.replace(/^import\s+.*?from\s+['"]\.\/.*?['"]\s*;?$/gm, '');
   
-  // Remove module exports
-  content = content.replace(/^export\s+/gm, '');
+  // Remove export keywords
+  content = content.replace(/export\s+/gm, '');
   
   // Add to bundle
   bundle += content + '\n\n';
 }
+
+// Add the closing IIFE
+bundle += footer;
 
 // Write to output file
 fs.writeFileSync(outputFile, bundle);

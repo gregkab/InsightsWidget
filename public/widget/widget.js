@@ -5,6 +5,7 @@
  * Built on 2025-04-20
  */
 
+(function() {
 /**
  * Utilities Module
  * Helper functions for the widget
@@ -168,16 +169,67 @@ function performSmartContentDetection(widgetElement) {
  * @returns {MutationObserver} - The mutation observer
  */
 function createContentObserver(contentElements, onContentChanged) {
+  // Store last content for comparison
+  let lastContent = '';
+  
+  // Extract current content for initial comparison base
+  if (contentElements.length > 0) {
+    try {
+      lastContent = Array.from(contentElements)
+        .map(el => el.textContent || '')
+        .join('\n\n')
+        .trim();
+    } catch (e) {
+      console.error('Error getting initial content:', e);
+    }
+  }
+  
   // Create mutation observer
   const observer = new MutationObserver((mutations) => {
-    // Check if any mutations are relevant (added nodes, character data changes)
-    const relevantChanges = mutations.some(mutation => 
-      (mutation.type === 'childList' && mutation.addedNodes.length > 0) ||
-      mutation.type === 'characterData'
-    );
+    // Ignore mutations that are likely not relevant to content
+    const relevantChanges = mutations.filter(mutation => {
+      // Ignore style changes
+      if (mutation.target.nodeName === 'STYLE') return false;
+      
+      // Ignore script changes
+      if (mutation.target.nodeName === 'SCRIPT') return false;
+      
+      // Ignore changes to the widget itself
+      if (mutation.target.closest && mutation.target.closest('.ai-insight-widget')) return false;
+      
+      // For added nodes, only count if they contain visible text content
+      if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+        return Array.from(mutation.addedNodes).some(node => {
+          return node.textContent && node.textContent.trim().length > 0;
+        });
+      }
+      
+      // For character data, only count if it changed visible text
+      if (mutation.type === 'characterData') {
+        return mutation.target.textContent && mutation.target.textContent.trim().length > 0;
+      }
+      
+      return false;
+    });
     
-    if (relevantChanges) {
-      console.log('Content changes detected');
+    if (relevantChanges.length === 0) return;
+    
+    // Extract current content for comparison
+    const currentContent = Array.from(contentElements)
+      .map(el => el.textContent || '')
+      .join('\n\n')
+      .trim();
+    
+    // Compare text length as a simple heuristic
+    // Only trigger if content changed by more than 5% or 20 characters
+    const oldLength = lastContent.length;
+    const newLength = currentContent.length;
+    const absoluteChange = Math.abs(oldLength - newLength);
+    const percentChange = oldLength > 0 ? absoluteChange / oldLength : 1;
+    
+    if (absoluteChange > 20 || percentChange > 0.05) {
+      console.log(`Content changes detected (${absoluteChange} chars, ${(percentChange * 100).toFixed(1)}%)`);
+      lastContent = currentContent;
       onContentChanged();
     }
   });
@@ -402,7 +454,21 @@ function showContentChangedNotification(contentEl, onReanalyze) {
     contentEl.insertBefore(notification, contentEl.firstChild);
     
     // Add click event for reanalysis
-    notification.querySelector('.reanalyze-button').addEventListener('click', onReanalyze);
+    notification.querySelector('.reanalyze-button').addEventListener('click', () => {
+      removeContentChangedNotification(contentEl);
+      onReanalyze();
+    });
+  }
+}
+
+/**
+ * Remove content changed notification if it exists
+ * @param {Element} contentEl - The content element
+ */
+function removeContentChangedNotification(contentEl) {
+  const notification = contentEl.querySelector('.content-changed-notification');
+  if (notification) {
+    notification.remove();
   }
 }
 
@@ -761,6 +827,9 @@ class AIInsightWidget {
     // Reset content changed flag
     this.contentChanged = false;
     
+    // Remove any existing content changed notification
+    removeContentChangedNotification(this.ui.contentEl);
+    
     // Refresh content elements in case DOM has changed significantly
     if (this.config.dynamicContentSupport) {
       this.contentElements = findContentElements(this.config, this.ui.container);
@@ -811,3 +880,4 @@ document.addEventListener('DOMContentLoaded', () => {
 // Export the widget class
 window.AIInsightWidget = AIInsightWidget; 
 
+})();
