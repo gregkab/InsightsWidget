@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>External Site Test | AI Insight Widget</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    article {
+      margin-bottom: 30px;
+    }
+    .site-footer {
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      text-align: center;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>External Site Example</h1>
+    <p>This demonstrates how the AI Insight Widget works on any site</p>
+  </header>
+
+  <article data-selector>
+    <h2>Web Development Best Practices</h2>
+    <p>
+      When developing modern web applications, it's important to follow established best practices
+      to ensure performance, accessibility, and maintainability. These practices include using semantic HTML,
+      optimizing assets, implementing responsive design, and following accessibility guidelines.
+    </p>
+    <p>
+      Performance optimization techniques include code splitting, lazy loading, and using appropriate
+      image formats and sizes. When working with JavaScript frameworks, follow the specific patterns
+      recommended for your chosen tool, whether that's React, Vue, Angular, or others.
+    </p>
+    <p>
+      Don't forget that web security is paramount. Protect against common vulnerabilities like XSS
+      and CSRF attacks. Use HTTPS everywhere, validate user inputs, and keep dependencies updated.
+    </p>
+  </article>
+
+  <article data-selector>
+    <h2>Content Strategy for Effective Communication</h2>
+    <p>
+      A good content strategy aligns with business goals while addressing user needs. It involves
+      understanding your audience, creating valuable content, and distributing it effectively.
+    </p>
+    <p>
+      Key elements of a content strategy include defining goals, identifying target audiences,
+      planning content types and topics, establishing voice and tone, and measuring results.
+      Content should be clear, concise, and valuable to the reader.
+    </p>
+    <p>
+      Consistency is important across all communication channels. Maintain a consistent brand voice
+      whether writing for your website, blog, email campaigns, or social media posts.
+    </p>
+  </article>
+
+  <div class="site-footer">
+    <p>© 2025 Example Company. All rights reserved.</p>
+  </div>
+
+  <!-- Add the widget stylesheet -->
+  <link rel="stylesheet" href="/widget/styles.css">
+
+  <!-- Add the widget script with configuration options -->
+  <script src="/widget/widget.js" 
+    data-api="http://localhost:8000" 
+    data-selector="[data-selector]" 
+    data-theme="light" 
+    data-mode="auto"
+    data-dynamic="true"
+    data-smart-detection="true"></script>
+</body>
+</html> 
